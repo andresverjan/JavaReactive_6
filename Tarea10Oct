@@ -1,0 +1,123 @@
+package com.cursoreactivo.cursoreactivo;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
+
+public class ObservableEjemplo {
+
+    // Suscribir el observable al observador
+
+    public static void main (String[] args){
+        Observable<Integer> observable = Observable.range(1, 5);
+        Observable<Integer> observableTarea = Observable.range(1, 10);
+
+        Observer<Integer> observer = new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                System.out.println("Subscribed");
+            }
+
+            @Override
+            public void onNext(Integer value) {
+                System.out.println("Received: " + value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.err.println("Error: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                System.out.println("Completed");
+            }
+        };
+
+        //Autoincremento números
+        Observer<Integer> observer1 = new Observer<Integer>() {
+            private int suma = 0;
+            @Override
+            public void onSubscribe(Disposable d) {
+                System.out.println("Subscribed");
+            }
+
+            @Override
+            public void onNext(Integer value) {
+                suma += value;
+                System.out.println("Value received: " + value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.err.println("Error: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                System.out.println("Suma total: " + suma);
+            }
+        };
+
+        //Factorial
+        Observer<Integer> observer2 = new Observer<Integer>() {
+            private int factorial = 1;
+            @Override
+            public void onSubscribe(Disposable d) {
+                System.out.println("Subscribed");
+            }
+
+            @Override
+            public void onNext(Integer value) {
+                factorial *= value;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.err.println("Error: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                System.out.println("Factorial: " + factorial);
+            }
+        };
+
+        //Operación random
+        Observer<Integer> observer3 = new Observer<Integer>() {
+            private int cuadrados = 0;
+            @Override
+            public void onSubscribe(Disposable d) {
+                System.out.println("Subscribed");
+            }
+
+            @Override
+            public void onNext(Integer value) {
+                cuadrados += value * value;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.err.println("Error: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                System.out.println("Suma Cuadrados: " + cuadrados);
+            }
+        };
+
+
+        observable.subscribe(observer);
+        observableTarea.subscribe(observer1);
+        observableTarea.subscribe(observer2);
+        observableTarea.subscribe(observer3);
+
+        observable.unsubscribeOn(Schedulers.io());
+        observableTarea.unsubscribeOn(Schedulers.io());
+
+    }
+
+}
