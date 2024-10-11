@@ -1,4 +1,4 @@
-package src.main.java.com.jonathan.java.clases;
+package src.main.java.com.jonathan.java.clases.dia1;
 
 import java.util.List;
 import java.util.logging.Level;
